@@ -23,7 +23,7 @@ A beautiful, minimalist web application for listening to Holy Quran Radio from C
 | **Mobile Perfect** | Works flawlessly on iOS, Android, all browsers |
 | **PWA Ready** | Install on home screen for background playback |
 | **Console Clean** | Zero errors or warnings in production |
-| **Lightweight** | ~85KB total — loads in under 1 second |
+| **Lightweight** | ~46KB total — loads in under 1 second |
 
 ---
 
