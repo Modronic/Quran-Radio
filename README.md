@@ -8,7 +8,7 @@ A beautiful, minimalist web application for listening to Holy Quran Radio from C
 > "وَإِذَا قُرِئَ الْقُرْآنُ فَاسْتَمِعُوا لَهُ وَأَنْصِتُوا لَعَلَّكُمْ تُرْحَمُونَ"  
 > — سورة الأعراف، الآية ٢٠٤
 
-[✨ Live Demo](https://modronic.github.io/holy.quran-cairo.radio.player/) | [📱 Install on Home Screen](#pwa-support)
+[🎧Live Demo](https://modronic.github.io/holy.quran-cairo.radio.player/) | [📱 Install on Home Screen](#pwa-support)
 
 ---
 
@@ -27,7 +27,7 @@ A beautiful, minimalist web application for listening to Holy Quran Radio from C
 
 ---
 
-## How to Use
+## How to Use❔
 
 ### For Listeners
 1. Visit the [live demo](https://modronic.github.io/holy.quran-cairo.radio.player/)
