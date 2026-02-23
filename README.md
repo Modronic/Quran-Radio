@@ -38,6 +38,7 @@ A beautiful, minimalist web application for listening to Holy Quran Radio from C
 ### For Developers
 1. Fork this repository
 2. Replace stream URLs in `index.html`:
+
    ```javascript
    
    
