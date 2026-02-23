@@ -1,6 +1,6 @@
 # 🌙 Holy Quran Cairo Radio Player
 
-![Holy Quran Radio Player](https://img.shields.io/badge/status-production--ready-brightgreen?style=for-the-badge)
+![Status](https://img.shields.io/badge/status-production--ready-brightgreen?style=for-the-badge)
 ![License](https://img.shields.io/badge/license-MIT-blue?style=for-the-badge)
 
 A beautiful, minimalist web application for listening to Holy Quran Radio from Cairo. Built with pure HTML, CSS, and JavaScript — **zero dependencies**, **single HTML file**, **respectful design**.
@@ -8,7 +8,7 @@ A beautiful, minimalist web application for listening to Holy Quran Radio from C
 > "وَإِذَا قُرِئَ الْقُرْآنُ فَاسْتَمِعُوا لَهُ وَأَنْصِتُوا لَعَلَّكُمْ تُرْحَمُونَ"  
 > — سورة الأعراف، الآية ٢٠٤
 
-[🎧Live Demo](https://modronic.github.io/holy.quran-cairo.radio.player/) | [📱 Install on Home Screen](#pwa-support)
+[🎧 Live Demo](https://modronic.github.io/holy.quran-cairo.radio.player/) | [📱 Install on Home Screen](#pwa-support)
 
 ---
 
@@ -35,23 +35,25 @@ A beautiful, minimalist web application for listening to Holy Quran Radio from C
 3. Adjust volume with slider (iOS: use device volume buttons)
 4. Click **■** to stop playback
 
-📱 Full-Screen Instructions (All Devices)
-Windows PC - Press F11 key (press again to exit)
-macOS - Click green maximize button or Control + Command + F
-iPhone/iPad - Open in Safari → Tap Share (⋮) → "Add to Home Screen" → Open from home screen (true full-screen)
-Android - Open in Chrome → Tap ⋮ → "Install app" → Open from app drawer (true full-screen)
-Any Browser - Tap the browser's fullscreen icon (⧉) in address bar
-💡 Pro Tip: For iOS/Android, adding to home screen gives true full-screen mode with background playback — much better than browser tab!
+### 📱 Full-Screen Instructions (All Devices)
+
+| Device | How to Full-Screen |
+|--------|-------------------|
+| **Windows PC** | Press `F11` key (press again to exit) |
+| **macOS** | Click green maximize button **or** `Control + Command + F` |
+| **iPhone/iPad** | Open in **Safari** → Tap **Share (⋮)** → "Add to Home Screen" → Open from home screen |
+| **Android** | Open in **Chrome** → Tap **⋮** → "Install app" → Open from app drawer |
+| **Any Browser** | Tap the browser's fullscreen icon (⧉) in address bar |
+
+> 💡 **Pro Tip:** For iOS/Android, **adding to home screen** gives true full-screen mode with background playback — much better than browser tab!
 
 ### For Developers
 1. Fork this repository
 2. Replace stream URLs in `index.html`:
 
-   ```javascript
-   
-   const STREAM_URLS = [
-       "YOUR_PRIMARY_STREAM_URL_HERE",
-       "YOUR_BACKUP_STREAM_URL_1_HERE",
-       "YOUR_BACKUP_STREAM_URL_2_HERE"
-   ];
-   
+```javascript
+const STREAM_URLS = [
+    "YOUR_PRIMARY_STREAM_URL_HERE",
+    "YOUR_BACKUP_STREAM_URL_1_HERE",
+    "YOUR_BACKUP_STREAM_URL_2_HERE"
+];
