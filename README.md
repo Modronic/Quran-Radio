@@ -12,7 +12,7 @@ A beautiful, minimalist web application for listening to Holy Quran Radio from C
 
 ---
 
-## Features ✨
+## ✨ Features
 
 | Feature | Description |
 |---------|-------------|
@@ -27,7 +27,7 @@ A beautiful, minimalist web application for listening to Holy Quran Radio from C
 
 ---
 
-## How to Use❔
+## ❔ How to Use
 
 ### For Listeners
 1. Visit the [live demo](https://modronic.github.io/holy.quran-cairo.radio.player/)
@@ -35,15 +35,23 @@ A beautiful, minimalist web application for listening to Holy Quran Radio from C
 3. Adjust volume with slider (iOS: use device volume buttons)
 4. Click **■** to stop playback
 
+📱 Full-Screen Instructions (All Devices)
+Windows PC - Press F11 key (press again to exit)
+macOS - Click green maximize button or Control + Command + F
+iPhone/iPad - Open in Safari → Tap Share (⋮) → "Add to Home Screen" → Open from home screen (true full-screen)
+Android - Open in Chrome → Tap ⋮ → "Install app" → Open from app drawer (true full-screen)
+Any Browser - Tap the browser's fullscreen icon (⧉) in address bar
+💡 Pro Tip: For iOS/Android, adding to home screen gives true full-screen mode with background playback — much better than browser tab!
+
 ### For Developers
 1. Fork this repository
 2. Replace stream URLs in `index.html`:
 
    ```javascript
    
-   
    const STREAM_URLS = [
        "YOUR_PRIMARY_STREAM_URL_HERE",
        "YOUR_BACKUP_STREAM_URL_1_HERE",
        "YOUR_BACKUP_STREAM_URL_2_HERE"
    ];
+   
