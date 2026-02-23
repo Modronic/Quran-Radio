@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="إذاعة القرآن">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" href="," />
+    <title>إذاعة القرآن الكريم | Holy Quran Radio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; touch-action: manipulation; }
+        
+        body {
+            background: radial-gradient(circle at center, #0a0e17 0%, #020408 100%);
+            color: #e2e8f0;
+            font-family: 'Tajawal', sans-serif;
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* Subtle geometric pattern overlay */
+        body::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(rgba(212, 175, 55, 0.03) 1px, transparent 1px),
+                radial-gradient(rgba(212, 175, 55, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .app-container {
+            position: relative;
+            z-index: 10;
+            width: 95%;
+            max-width: 500px;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            border-radius: 28px;
+            padding: 45px 35px;
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.5),
+                0 0 40px rgba(212, 175, 55, 0.15);
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        .app-container.playing {
+            border-color: rgba(212, 175, 55, 0.6);
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.6),
+                0 0 50px rgba(212, 175, 55, 0.35);
+        }
+
+        /* Warning banners */
+        .warning-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 14px 20px;
+            text-align: center;
+            z-index: 1000;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            display: none;
+            animation: slideDown 0.4s ease;
+        }
+
+        .warning-banner.show {
+            display: block;
+        }
+
+        .warning-banner.facebook {
+            background: rgba(239, 68, 68, 0.95);
+            color: white;
+        }
+
+        .warning-banner.adblock {
+            background: rgba(245, 158, 11, 0.95);
+            color: #000;
+        }
+
+        .warning-banner.network {
+            background: rgba(59, 130, 246, 0.95);
+            color: white;
+        }
+
+        .warning-banner strong {
+            display: block;
+            margin-bottom: 4px;
+            font-weight: 700;
+        }
+
+        .warning-banner a {
+            color: inherit;
+            text-decoration: underline;
+            font-weight: 600;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Sacred geometry symbol */
+        .symbol-container {
+            position: relative;
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 35px;
+            cursor: pointer;
+            transition: transform 0.4s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .symbol-container:active {
+            transform: scale(0.95);
+        }
+
+        .symbol-container:hover:not(:active) {
+            transform: scale(1.05);
+        }
+
+        .symbol {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .circle {
+            position: absolute;
+            border: 2px solid rgba(212, 175, 55, 0.7);
+            border-radius: 50%;
+            transition: all 0.6s ease;
+        }
+
+        .circle-1 { width: 100%; height: 100%; }
+        .circle-2 { width: 85%; height: 85%; }
+        .circle-3 { width: 70%; height: 70%; }
+
+        .symbol-core {
+            font-size: 52px;
+            color: #D4AF37;
+            transition: all 0.5s ease;
+            text-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
+            pointer-events: none;
+        }
+
+        .app-container.playing .circle {
+            animation: pulse 3s infinite ease-in-out;
+        }
+
+        .app-container.playing .circle-1 { animation-delay: 0s; }
+        .app-container.playing .circle-2 { animation-delay: 0.3s; }
+        .app-container.playing .circle-3 { animation-delay: 0.6s; }
+
+        .app-container.playing .symbol-core {
+            animation: breathe 4s infinite ease-in-out;
+            color: #f8f4e6;
+            text-shadow: 0 0 25px rgba(255, 244, 220, 0.8);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.08); opacity: 1; }
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        .title {
+            font-family: 'Amiri', serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #D4AF37, #f3cf55, #D4AF37);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+            line-height: 1.3;
+        }
+
+        .subtitle {
+            font-family: 'Tajawal', sans-serif;
+            font-weight: 300;
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 35px;
+            letter-spacing: 0.5px;
+        }
+
+        .status {
+            min-height: 28px;
+            font-size: 1.05rem;
+            font-family: 'Amiri', serif;
+            margin: 25px 0 25px;
+            padding: 8px 20px;
+            border-radius: 20px;
+            background: rgba(30, 41, 59, 0.7);
+            transition: all 0.4s ease;
+        }
+
+        .status.idle {
+            color: rgba(255, 255, 255, 0.6);
+            border: 1px dashed rgba(212, 175, 55, 0.3);
+        }
+
+        .status.playing {
+            color: #D4AF37;
+            background: rgba(212, 175, 55, 0.15);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+        }
+
+        .status.error {
+            color: #f87171;
+            background: rgba(127, 29, 29, 0.2);
+            border: 1px solid rgba(248, 113, 113, 0.4);
+        }
+
+        .status.info {
+            color: #38bdf8;
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+        }
+
+        .instructions {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 20px;
+            line-height: 1.6;
+            font-style: italic;
+            padding: 15px;
+            border-radius: 16px;
+            background: rgba(0, 0, 0, 0.25);
+        }
+
+        .footer {
+            margin-top: 25px;
+            font-size: 0.8rem;
+            color: rgba(212, 175, 55, 0.7);
+            font-family: 'Tajawal', sans-serif;
+            letter-spacing: 1px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Broadcast status - tiny text at bottom (ONLY place with "بث") */
+        .broadcast-status {
+            margin-top: 8px;
+            font-size: 0.65rem;
+            color: rgba(255, 255, 255, 0.4);
+            font-family: 'Tajawal', sans-serif;
+            letter-spacing: 0.5px;
+        }
+
+        .broadcast-status.active {
+            color: rgba(212, 175, 55, 0.8);
+        }
+
+        /* Controls Section - SINGLE TOGGLE BUTTON */
+        .controls-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .control-btn {
+            width: 75px;
+            height: 75px;
+            border-radius: 50%;
+            background: rgba(30, 41, 59, 0.8);
+            border: 2px solid rgba(212, 175, 55, 0.4);
+            color: #D4AF37;
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            font-family: 'Tajawal', sans-serif;
+            font-weight: 600;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-appearance: none;
+            appearance: none;
+            outline: none;
+        }
+
+        .control-btn:hover {
+            background: rgba(212, 175, 55, 0.15);
+            transform: scale(1.1);
+            border-color: rgba(212, 175, 55, 0.7);
+        }
+
+        .control-btn:active {
+            transform: scale(0.95);
+        }
+
+        .control-btn.stop {
+            background: rgba(153, 27, 27, 0.2);
+            border-color: rgba(239, 68, 68, 0.5);
+            color: #ef4444;
+        }
+
+        .control-btn.stop:hover {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: rgba(239, 68, 68, 0.7);
+        }
+
+        .control-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .volume-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 30px;
+            width: 100%;
+            max-width: 320px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .volume-icon {
+            color: #D4AF37;
+            font-size: 1.4rem;
+            min-width: 28px;
+            text-align: center;
+        }
+
+        .volume-slider {
+            width: 100%;
+            height: 6px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            outline: none;
+            transition: all 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #D4AF37;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.7);
+            transition: all 0.2s ease;
+        }
+
+        .volume-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.25);
+            background: #f3cf55;
+        }
+
+        .volume-slider::-webkit-slider-thumb:active {
+            transform: scale(1.3);
+        }
+
+        .volume-slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #D4AF37;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.7);
+        }
+
+        /* Compatibility info */
+        .compat-info {
+            margin-top: 15px;
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.5);
+            font-family: 'Tajawal', sans-serif;
+            line-height: 1.4;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 500px) {
+            .app-container {
+                padding: 35px 25px;
+                border-radius: 24px;
+            }
+            .symbol-container {
+                width: 150px;
+                height: 150px;
+            }
+            .symbol-core {
+                font-size: 44px;
+            }
+            .title {
+                font-size: 2.3rem;
+            }
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            .control-btn {
+                width: 65px;
+                height: 65px;
+                font-size: 1.6rem;
+            }
+            .volume-container {
+                gap: 8px;
+            }
+            .volume-icon {
+                font-size: 1.2rem;
+            }
+            .broadcast-status {
+                font-size: 0.6rem;
+            }
+            .warning-banner {
+                padding: 12px 15px;
+                font-size: 0.85rem;
+            }
+            .compat-info {
+                font-size: 0.65rem;
+            }
+        }
+
+        /* Loading spinner */
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(212, 175, 55, 0.3);
+            border-radius: 50%;
+            border-top-color: #D4AF37;
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Warning Banners -->
+    <div class="warning-banner facebook" id="facebookWarning">
+        <strong>⚠️ تنبيه فيسبوك</strong>
+        هذا التطبيق لا يعمل داخل تطبيق فيسبوك.<br>
+        <strong>الحل:</strong> اضغط ⋮ ثم "فتح في المتصفح" أو استخدم <strong>Chrome/Safari</strong>
+    </div>
+
+    <div class="warning-banner adblock" id="adblockWarning">
+        <strong>⚠️ كاشف حظر الإعلانات</strong>
+        تم اكتشاف برنامج حظر إعلانات.<br>
+        قد يؤثر على تشغيل البث. يرجى تعطيله لهذه الصفحة.
+    </div>
+
+    <div class="warning-banner network" id="networkWarning">
+        <strong>⚠️ مشكلة في الشبكة</strong>
+        اتصال الإنترنت ضعيف أو محظور.<br>
+        جرب شبكة مختلفة أو تحقق من جدار الحماية.
+    </div>
+
+    <div class="app-container" id="app">
+        <div class="symbol-container" id="playButton">
+            <div class="symbol">
+                <div class="circle circle-1"></div>
+                <div class="circle circle-2"></div>
+                <div class="circle circle-3"></div>
+                <div class="symbol-core">۞</div>
+            </div>
+        </div>
+        
+        <h1 class="title">إذاعة القرآن الكريم</h1>
+        <h2 class="subtitle">من القاهرة • بث مباشر</h2>
+        
+        <div class="status idle" id="status">اضغط على الرمز ۞ لبدء الاستماع المباشر</div>
+        
+        <!-- SINGLE TOGGLE BUTTON (Play/Stop) -->
+        <div class="controls-container">
+            <div class="control-btn" id="toggleBtn">▶</div>
+        </div>
+        
+        <div class="volume-container">
+            <div class="volume-icon" id="volumeIcon">🔉</div>
+            <input type="range" min="0" max="1" step="0.01" value="0.85" class="volume-slider" id="volumeSlider">
+        </div>
+        
+        <div class="instructions">
+            "وَإِذَا قُرِئَ الْقُرْآنُ فَاسْتَمِعُوا لَهُ وَأَنْصِتُوا لَعَلَّكُمْ تُرْحَمُونَ"
+            <br><span style="font-size:0.9em; display:block; margin-top:8px;">سورة الأعراف، الآية ٢.٤</span>
+        </div>
+        
+        <div class="footer">
+            Holy Quran Radio • Cairo, Egypt
+            <div class="broadcast-status" id="broadcastStatus">بث: جاهز</div>
+        </div>
+
+        <div class="compat-info">
+            يعمل على: Chrome, Firefox, Safari, Edge, Samsung Internet<br>
+            ملاحظة: قد لا يعمل داخل تطبيقات مثل فيسبوك، إنستغرام، تويتر
+        </div>
+    </div>
+
+    <script>
+        // 🔴 REPLACE THESE WITH YOUR 3 ACTUAL STREAM LINKS 🔴
+        const STREAM_URLS = [
+            "https://stream.radiojar.com/8s5u5tpdtwzuv",  // Server 1 - Primary
+            "https://n03.radiojar.com/8s5u5tpdtwzuv", // Server 2 - Backup
+            "http://n0e.radiojar.com/8s5u5tpdtwzuv"  // Server 3 - Backup
+        ];
+
+        // 🔧 DEBUG MODE - Set to false in production
+        const DEBUG = false;
+
+        // Browser/Platform Detection
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+        const isAndroid = /Android/i.test(navigator.userAgent);
+        const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+        const isStandalone = window.matchMedia('(display-mode: standalone)').matches || 
+                            window.navigator.standalone === true;
+        
+        let audio = null;
+        let audioContext = null;
+        let isPlaying = false;
+        let currentServerIndex = 0;
+        let isSwitchingServer = false;
+        let lastErrorTime = 0;
+        let errorTimeout = null;
+        let stallTimeout = null;
+        let isInitializing = false;
+        let lastClickTime = 0;
+        const CLICK_DEBOUNCE_MS = 300;
+        let hasAttemptedPlay = false;
+        let backgroundMonitorInterval = null;
+        let connectionAttemptCount = 0;
+        const MAX_CONNECTION_ATTEMPTS = 3;
+        const CONNECTION_TIMEOUT_MS = 3000;
+        
+        // DOM Elements
+        const app = document.getElementById('app');
+        const playButton = document.getElementById('playButton');
+        const toggleBtn = document.getElementById('toggleBtn');
+        const volumeSlider = document.getElementById('volumeSlider');
+        const volumeIcon = document.getElementById('volumeIcon');
+        const statusEl = document.getElementById('status');
+        const broadcastStatus = document.getElementById('broadcastStatus');
+        const facebookWarning = document.getElementById('facebookWarning');
+        const adblockWarning = document.getElementById('adblockWarning');
+        const networkWarning = document.getElementById('networkWarning');
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            detectEnvironment();
+            checkAdblock();
+            setupAudioContext();
+            setupPreload();
+            setupNetworkMonitoring();
+            
+            // Safari volume fix
+            if (isIOS) {
+                volumeSlider.disabled = true;
+                volumeIcon.textContent = '📱';
+                volumeSlider.style.opacity = '0.5';
+            }
+            
+            // Start background monitoring
+            startBackgroundMonitoring();
+        });
+
+        // Network status monitoring
+        function setupNetworkMonitoring() {
+            window.addEventListener('offline', () => {
+                logDebug("Network offline detected");
+                if (isPlaying) {
+                    handleNetworkOffline();
+                }
+            });
+            
+            window.addEventListener('online', () => {
+                logDebug("Network online detected");
+                networkWarning.classList.remove('show');
+                if (!isPlaying && hasAttemptedPlay) {
+                    // Auto-reconnect when network comes back
+                    setTimeout(() => {
+                        attemptAutoReconnect();
+                    }, 1000);
+                }
+            });
+        }
+
+        // Background monitoring for automatic reconnection
+        function startBackgroundMonitoring() {
+            // Clear any existing interval
+            if (backgroundMonitorInterval) {
+                clearInterval(backgroundMonitorInterval);
+            }
+            
+            // Check every 10 seconds if we should attempt reconnection
+            backgroundMonitorInterval = setInterval(() => {
+                if (!isPlaying && hasAttemptedPlay && navigator.onLine) {
+                    logDebug("Background monitor: Attempting auto-reconnect");
+                    attemptAutoReconnect();
+                }
+            }, 10000);
+        }
+
+        function stopBackgroundMonitoring() {
+            if (backgroundMonitorInterval) {
+                clearInterval(backgroundMonitorInterval);
+                backgroundMonitorInterval = null;
+            }
+        }
+
+        // Auto-reconnect logic
+        function attemptAutoReconnect() {
+            if (isPlaying || isSwitchingServer) return;
+            
+            logDebug("Attempting auto-reconnect...");
+            statusEl.innerHTML = `<span class="spinner"></span>جارٍ إعادة الاتصال...`;
+            statusEl.className = "status info";
+            
+            // Try to connect to primary stream first
+            connectToStream(0, true).catch(() => {
+                // If primary fails, try backup streams
+                connectToStream(1, true).catch(() => {
+                    connectToStream(2, true).catch(() => {
+                        statusEl.textContent = "فشل إعادة الاتصال. جارٍ المحاولة مرة أخرى...";
+                        statusEl.className = "status error";
+                        setTimeout(attemptAutoReconnect, 5000);
+                    });
+                });
+            });
+        }
+
+        // Stream connection with timeout
+        function connectToStream(serverIndex, isAutoReconnect = false) {
+            return new Promise((resolve, reject) => {
+                if (isSwitchingServer) {
+                    reject(new Error("Already switching server"));
+                    return;
+                }
+                
+                isSwitchingServer = true;
+                connectionAttemptCount = 0;
+                
+                // Create timeout for connection attempt
+                const connectionTimeout = setTimeout(() => {
+                    logDebug(`Connection timeout for server ${serverIndex + 1}`);
+                    isSwitchingServer = false;
+                    reject(new Error("Connection timeout"));
+                }, CONNECTION_TIMEOUT_MS);
+                
+                // Initialize fresh audio
+                initAudio();
+                
+                // Set current server URL with cache busting
+                const timestamp = Date.now();
+                audio.src = `${STREAM_URLS[serverIndex]}?t=${timestamp}`;
+                currentServerIndex = serverIndex;
+                
+                // Update UI
+                if (!isAutoReconnect) {
+                    statusEl.innerHTML = `<span class="spinner"></span>جارٍ الاتصال بالبث ${serverIndex + 1}...`;
+                    statusEl.className = "status idle";
+                }
+                broadcastStatus.textContent = `بث: جارٍ الاتصال...`;
+                
+                // Attempt to play
+                const playPromise = audio.play();
+                
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        clearTimeout(connectionTimeout);
+                        isSwitchingServer = false;
+                        resolve();
+                    }).catch((error) => {
+                        clearTimeout(connectionTimeout);
+                        isSwitchingServer = false;
+                        
+                        // Only reject if not AbortError (expected during rapid clicks)
+                        if (error.name !== 'AbortError') {
+                            logDebug(`Connection failed for server ${serverIndex + 1}:`, error.message);
+                            reject(error);
+                        } else {
+                            resolve(); // Treat AbortError as success for auto-reconnect
+                        }
+                    });
+                } else {
+                    clearTimeout(connectionTimeout);
+                    isSwitchingServer = false;
+                    reject(new Error("Play promise undefined"));
+                }
+            });
+        }
+
+        // Detect environment and show appropriate warnings
+        function detectEnvironment() {
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            
+            // Facebook/Instagram/Twitter/LinkedIn detection
+            const isInAppBrowser = (
+                userAgent.includes('FBAN') || 
+                userAgent.includes('FBAV') ||
+                userAgent.includes('FB_IAB') ||
+                userAgent.includes('FB4A') ||
+                userAgent.includes('Instagram') ||
+                userAgent.includes('Twitter') ||
+                userAgent.includes('LinkedIn') ||
+                userAgent.includes('Snapchat') ||
+                userAgent.includes('TikTok') ||
+                /FBAV/.test(userAgent)
+            );
+            
+            if (isInAppBrowser) {
+                facebookWarning.classList.add('show');
+                disableControls();
+                statusEl.textContent = "يرجى نسخ الرابط و تشغيل الراديو في متصفح منفصل";
+                statusEl.className = "status warning";
+            }
+            
+            // iOS standalone mode benefits
+            if (isIOS && !isStandalone) {
+                setTimeout(() => {
+                    showIosInstallPrompt();
+                }, 5000);
+            }
+        }
+
+        // Check for ad blockers
+        function checkAdblock() {
+            const adblockTest = document.createElement('div');
+            adblockTest.innerHTML = '&nbsp;';
+            adblockTest.className = 'adsbox';
+            adblockTest.style.position = 'absolute';
+            adblockTest.style.left = '-9999px';
+            document.body.appendChild(adblockTest);
+            
+            setTimeout(() => {
+                if (adblockTest.offsetHeight === 0 || 
+                    adblockTest.clientHeight === 0 ||
+                    window.getComputedStyle(adblockTest).display === 'none') {
+                    adblockWarning.classList.add('show');
+                }
+                document.body.removeChild(adblockTest);
+            }, 100);
+        }
+
+        // Setup Web Audio API for better compatibility
+        function setupAudioContext() {
+            try {
+                window.AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (window.AudioContext) {
+                    audioContext = new AudioContext();
+                }
+            } catch (e) {
+                logDebug("Web Audio API not supported, using HTML5 Audio");
+            }
+        }
+
+        // Preload audio for faster start
+        function setupPreload() {
+            // Preconnect to stream servers
+            STREAM_URLS.forEach(url => {
+                try {
+                    const link = document.createElement('link');
+                    link.rel = 'preconnect';
+                    link.href = new URL(url, window.location.href).origin;
+                    document.head.appendChild(link);
+                } catch (e) {
+                    logDebug(`Invalid URL: ${url}`);
+                }
+            });
+        }
+
+        // CRITICAL FIX: Complete audio destruction and recreation
+        function destroyAudio() {
+            if (audio) {
+                // Remove all event listeners
+                audio.removeEventListener('playing', onPlaying);
+                audio.removeEventListener('pause', onPause);
+                audio.removeEventListener('ended', onEnded);
+                audio.removeEventListener('error', onError);
+                audio.removeEventListener('stalled', onStalled);
+                audio.removeEventListener('waiting', onWaiting);
+                audio.removeEventListener('abort', onAbort);
+                audio.removeEventListener('suspend', onSuspend);
+                audio.removeEventListener('timeupdate', onTimeUpdate);
+                audio.removeEventListener('seeking', onSeeking);
+                
+                // Pause and clear
+                try {
+                    audio.pause();
+                    audio.src = '';
+                    audio.load();
+                } catch (e) {
+                    logDebug("Error during audio destroy:", e);
+                }
+                
+                // Nullify reference
+                audio = null;
+            }
+            
+            // Clear all timeouts
+            if (errorTimeout) {
+                clearTimeout(errorTimeout);
+                errorTimeout = null;
+            }
+            if (stallTimeout) {
+                clearTimeout(stallTimeout);
+                stallTimeout = null;
+            }
+        }
+
+        // Initialize audio with maximum compatibility
+        function initAudio() {
+            if (isInitializing) return;
+            isInitializing = true;
+            
+            // Destroy any existing audio first
+            destroyAudio();
+            
+            // Create fresh audio object
+            audio = new Audio();
+            audio.crossOrigin = "anonymous";
+            audio.volume = parseFloat(volumeSlider.value);
+            
+            // Safari/iOS specific attributes
+            if (isIOS) {
+                audio.setAttribute('playsinline', '');
+                audio.setAttribute('webkit-playsinline', '');
+            }
+            
+            // Prevent download/save options
+            audio.setAttribute('controlsList', 'nodownload nofullscreen noremoteplayback');
+            audio.setAttribute('disableRemotePlayback', '');
+            
+            // Preload metadata only (save bandwidth)
+            audio.preload = "metadata";
+            
+            // Add event listeners
+            audio.addEventListener('playing', onPlaying);
+            audio.addEventListener('pause', onPause);
+            audio.addEventListener('ended', onEnded);
+            audio.addEventListener('error', onError);
+            audio.addEventListener('stalled', onStalled);
+            audio.addEventListener('waiting', onWaiting);
+            audio.addEventListener('abort', onAbort);
+            audio.addEventListener('suspend', onSuspend);
+            
+            // Prevent seeking - LIVE STREAM ONLY
+            audio.addEventListener('timeupdate', onTimeUpdate);
+            audio.addEventListener('seeking', onSeeking);
+            
+            isInitializing = false;
+            logDebug("Audio initialized");
+        }
+
+        // Event handlers
+        function onPlaying() {
+            isPlaying = true;
+            isSwitchingServer = false;
+            app.classList.add('playing');
+            toggleBtn.innerHTML = '■';
+            toggleBtn.classList.add('stop');
+            statusEl.textContent = "الاستماع جارٍ الآن";
+            statusEl.className = "status playing";
+            updateBroadcastStatus();
+            networkWarning.classList.remove('show');
+            
+            // Resume audio context if suspended
+            if (audioContext && audioContext.state === 'suspended') {
+                audioContext.resume().catch(e => logDebug("AudioContext resume:", e));
+            }
+            
+            logDebug(`Playing from server ${currentServerIndex + 1}`);
+        }
+
+        function onPause() {
+            if (!isPlaying) return;
+            isPlaying = false;
+            app.classList.remove('playing');
+            toggleBtn.innerHTML = '▶';
+            toggleBtn.classList.remove('stop');
+            statusEl.textContent = "مُوقَف مؤقتًا";
+            statusEl.className = "status idle";
+            logDebug("Audio paused");
+        }
+
+        function onEnded() {
+            if (!isPlaying || isSwitchingServer) return;
+            logDebug("Stream ended - attempting reconnect");
+            handleStreamFailure();
+        }
+
+        function onError(e) {
+            const now = Date.now();
+            if (now - lastErrorTime < 2000) return;
+            lastErrorTime = now;
+            
+            if (e.name !== 'AbortError') {
+                logDebug("Stream error:", e);
+            }
+            handleStreamFailure();
+        }
+
+        function onStalled() {
+            if (!isPlaying || isSwitchingServer) return;
+            
+            if (stallTimeout) clearTimeout(stallTimeout);
+            stallTimeout = setTimeout(() => {
+                statusEl.textContent = "البث متوقف مؤقتًا... جارٍ إعادة الاتصال";
+                statusEl.className = "status info";
+                logDebug("Stream stalled");
+                handleStreamFailure();
+            }, 3000);
+        }
+
+        function onWaiting() {
+            if (!isPlaying || isSwitchingServer) return;
+            statusEl.textContent = "جارٍ التحميل...";
+            statusEl.className = "status info";
+            logDebug("Stream waiting/buffering");
+        }
+
+        function onAbort() {
+            if (isSwitchingServer) return;
+            logDebug("Stream aborted");
+            handleStreamFailure();
+        }
+
+        function onSuspend() {
+            if (isSwitchingServer) return;
+            logDebug("Stream suspended");
+            handleStreamFailure();
+        }
+
+        function onTimeUpdate() {
+            if (audio && audio.duration > 0 && !audio.ended && isPlaying) {
+                if (audio.currentTime < audio.duration - 10) {
+                    try {
+                        audio.currentTime = audio.duration - 1;
+                    } catch (e) {
+                        // Ignore seek errors
+                    }
+                }
+            }
+        }
+
+        function onSeeking(e) {
+            if (isPlaying) {
+                e.preventDefault();
+                setTimeout(() => {
+                    if (audio && audio.duration > 0) {
+                        try {
+                            audio.currentTime = audio.duration - 1;
+                        } catch (e) {
+                            // Ignore seek errors
+                        }
+                    }
+                }, 100);
+            }
+        }
+
+        // Handle stream failure during playback
+        function handleStreamFailure() {
+            if (isSwitchingServer || !isPlaying) return;
+            
+            logDebug("Handling stream failure...");
+            
+            // Try next server
+            const nextServerIndex = (currentServerIndex + 1) % STREAM_URLS.length;
+            
+            // If we've tried all servers and back to start
+            if (nextServerIndex === 0 && currentServerIndex > 0) {
+                // All servers failed - stop playback
+                stopAudio();
+                statusEl.textContent = navigator.onLine ? 
+                    "حدث خطأ فني أو لا يوجد اتصال بالانترنت. يرجى المحاولة مرة اخرى او لاحقًا." : 
+                    "لا يوجد اتصال بالإنترنت";
+                statusEl.className = "status error";
+                broadcastStatus.textContent = "بث: غير متصل";
+                broadcastStatus.className = "broadcast-status";
+                
+                if (!navigator.onLine) {
+                    networkWarning.classList.add('show');
+                }
+                
+                logDebug("All servers failed during playback");
+                return;
+            }
+            
+            // Attempt to switch to next server
+            statusEl.innerHTML = `<span class="spinner"></span>التبديل إلى بث احتياطي (${nextServerIndex + 1})...`;
+            statusEl.className = "status info";
+            
+            // Destroy current audio completely
+            destroyAudio();
+            
+            // Create new audio with backup server
+            currentServerIndex = nextServerIndex;
+            
+            // Initialize fresh audio
+            initAudio();
+            
+            // Cache busting
+            const timestamp = Date.now();
+            audio.src = `${STREAM_URLS[currentServerIndex]}?t=${timestamp}`;
+            
+            // Attempt to play backup
+            const playPromise = audio.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.then(_ => {
+                    logDebug(`Successfully switched to server ${currentServerIndex + 1}`);
+                }).catch(e => {
+                    if (e.name === 'AbortError') {
+                        return;
+                    }
+                    
+                    logDebug("Backup server failed:", e);
+                    handleStreamFailure(); // Recursive retry
+                });
+            }
+        }
+
+        function updateBroadcastStatus() {
+            broadcastStatus.textContent = `بث: ${currentServerIndex + 1} نشط`;
+            broadcastStatus.className = "broadcast-status active";
+        }
+
+        function startAudio() {
+            const now = Date.now();
+            if (now - lastClickTime < CLICK_DEBOUNCE_MS) {
+                return;
+            }
+            lastClickTime = now;
+            hasAttemptedPlay = true;
+            
+            // Check network status BEFORE attempting to play
+            if (!navigator.onLine) {
+                statusEl.textContent = "لا يوجد اتصال بالإنترنت";
+                statusEl.className = "status error";
+                networkWarning.classList.add('show');
+                return;
+            }
+            
+            // Check if streams are configured
+            if (!STREAM_URLS || STREAM_URLS.length === 0 || STREAM_URLS[0] === "YOUR_PRIMARY_STREAM_URL_HERE") {
+                statusEl.textContent = "خطأ في التكوين: لم يتم إضافة روابط البث";
+                statusEl.className = "status error";
+                return;
+            }
+            
+            // Resume AudioContext if needed
+            if (audioContext && audioContext.state === 'suspended') {
+                audioContext.resume().catch(e => logDebug("AudioContext resume failed:", e));
+            }
+            
+            // Start connection attempt sequence
+            statusEl.innerHTML = `<span class="spinner"></span>جارٍ الاتصال...`;
+            statusEl.className = "status idle";
+            
+            // Try primary stream first
+            connectToStream(0)
+                .then(() => {
+                    logDebug("Playback started successfully on primary stream");
+                })
+                .catch(() => {
+                    // Primary failed, try backup 1
+                    connectToStream(1)
+                        .then(() => {
+                            logDebug("Playback started successfully on backup stream 1");
+                        })
+                        .catch(() => {
+                            // Backup 1 failed, try backup 2
+                            connectToStream(2)
+                                .then(() => {
+                                    logDebug("Playback started successfully on backup stream 2");
+                                })
+                                .catch(() => {
+                                    // All streams failed
+                                    stopAudio();
+                                    statusEl.textContent = "حدث خطأ فني أو لا يوجد اتصال بالانترنت. يرجى المحاولة مرة اخرى او لاحقًا.";
+                                    statusEl.className = "status error";
+                                    broadcastStatus.textContent = "بث: غير متصل";
+                                    broadcastStatus.className = "broadcast-status";
+                                    logDebug("All streams failed");
+                                });
+                        });
+                });
+        }
+
+        function stopAudio() {
+            const now = Date.now();
+            if (now - lastClickTime < CLICK_DEBOUNCE_MS) {
+                return;
+            }
+            lastClickTime = now;
+            hasAttemptedPlay = false;
+            
+            if (errorTimeout) {
+                clearTimeout(errorTimeout);
+                errorTimeout = null;
+            }
+            if (stallTimeout) {
+                clearTimeout(stallTimeout);
+                stallTimeout = null;
+            }
+            
+            // Destroy audio completely
+            destroyAudio();
+            
+            // Reset all state variables
+            isPlaying = false;
+            isSwitchingServer = false;
+            isInitializing = false;
+            lastErrorTime = 0;
+            
+            // Update UI
+            app.classList.remove('playing');
+            toggleBtn.innerHTML = '▶';
+            toggleBtn.classList.remove('stop');
+            statusEl.textContent = "اضغط على الرمز ۞ لبدء الاستماع المباشر";
+            statusEl.className = "status idle";
+            broadcastStatus.textContent = "بث: جاهز";
+            broadcastStatus.className = "broadcast-status";
+            networkWarning.classList.remove('show');
+            
+            logDebug("Audio stopped");
+        }
+
+        function handleNetworkOffline() {
+            if (isPlaying) {
+                stopAudio();
+                statusEl.textContent = "انقطع اتصال الإنترنت";
+                statusEl.className = "status error";
+                networkWarning.classList.add('show');
+            }
+        }
+
+        function disableControls() {
+            toggleBtn.disabled = true;
+            toggleBtn.style.opacity = "0.5";
+            toggleBtn.style.cursor = "not-allowed";
+            toggleBtn.style.pointerEvents = "none";
+            playButton.style.pointerEvents = "none";
+            volumeSlider.disabled = true;
+        }
+
+        function handleToggleClick(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            if (toggleBtn.disabled) return;
+            
+            if (isPlaying) {
+                stopAudio();
+            } else {
+                startAudio();
+            }
+        }
+
+        // Toggle button listener (Play/Stop in one button)
+        toggleBtn.addEventListener('click', handleToggleClick);
+        toggleBtn.addEventListener('touchstart', handleToggleClick);
+
+        // Also allow clicking the symbol to toggle
+        playButton.addEventListener('click', handleToggleClick);
+        playButton.addEventListener('touchstart', handleToggleClick);
+
+        // Volume control
+        volumeSlider.addEventListener('input', () => {
+            const volume = parseFloat(volumeSlider.value);
+            if (audio && !isIOS) {
+                audio.volume = volume;
+            }
+            
+            // Update volume icon
+            if (volume === 0) {
+                volumeIcon.textContent = '🔇';
+            } else if (volume < 0.5) {
+                volumeIcon.textContent = '🔈';
+            } else {
+                volumeIcon.textContent = '🔊';
+            }
+        });
+
+        // Initialize volume icon
+        volumeSlider.dispatchEvent(new Event('input'));
+
+        // Handle page visibility (keep playing in background)
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'hidden' && isPlaying) {
+                logDebug("Page hidden - audio continues in background");
+            }
+        });
+
+        // iOS install to home screen prompt
+        function showIosInstallPrompt() {
+            if (!isIOS || isStandalone) return;
+            
+            setTimeout(() => {
+                if (!isPlaying && Math.random() > 0.7) {
+                    statusEl.innerHTML = "💡 <strong>نصيحة:</strong> اضغط مشاركة ➕ ثم 'إضافة إلى الشاشة الرئيسية' للاستماع في الخلفية";
+                    statusEl.className = "status info";
+                    setTimeout(() => {
+                        if (!isPlaying) {
+                            statusEl.textContent = "اضغط على الرمز ۞ لبدء الاستماع المباشر";
+                            statusEl.className = "status idle";
+                        }
+                    }, 8000);
+                }
+            }, 3000);
+        }
+
+        // Debug logging helper
+        function logDebug(message, ...args) {
+            if (DEBUG) {
+                console.log(`[DEBUG] ${message}`, ...args);
+            }
+        }
+
+        // Initial status
+        statusEl.textContent = "اضغط على الرمز ۞ لبدء الاستماع المباشر";
+        broadcastStatus.textContent = "بث: جاهز";
+    </script>
+</body>
+</html>
