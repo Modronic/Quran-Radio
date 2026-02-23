@@ -12,7 +12,7 @@ A beautiful, minimalist web application for listening to Holy Quran Radio from C
 
 ---
 
-## ✨ Features
+## Features
 
 | Feature | Description |
 |---------|-------------|
@@ -27,7 +27,7 @@ A beautiful, minimalist web application for listening to Holy Quran Radio from C
 
 ---
 
-## 🎯 How to Use
+## How to Use
 
 ### For Listeners
 1. Visit the [live demo](https://modronic.github.io/holy.quran-cairo.radio.player/)
