@@ -12,7 +12,7 @@ A beautiful, minimalist web application for listening to Holy Quran Radio from C
 
 ---
 
-## Features
+## Features ✨
 
 | Feature | Description |
 |---------|-------------|
