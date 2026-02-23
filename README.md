@@ -40,6 +40,7 @@ A beautiful, minimalist web application for listening to Holy Quran Radio from C
 2. Replace stream URLs in `index.html`:
    ```javascript
    
+   
    const STREAM_URLS = [
        "YOUR_PRIMARY_STREAM_URL_HERE",
        "YOUR_BACKUP_STREAM_URL_1_HERE",
