@@ -1,5 +1,5 @@
 # 🌙 Holy Quran Radio App
-     Live from Cairo, Egypt
+        Live from Cairo, Egypt
 
 
 ![Status](https://img.shields.io/badge/status-production--ready-brightgreen?style=for-the-badge)
