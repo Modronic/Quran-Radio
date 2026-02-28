@@ -1,4 +1,4 @@
-# 🌙 Holy Quran Radio App
+# 🌙 Quran Radio App
                  Live from Cairo, Egypt
 
 
