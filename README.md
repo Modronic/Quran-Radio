@@ -1,4 +1,4 @@
-# 🌙 Quran Radio - Live from Cairo
+# 🌙 Quran Radio App
 
 ![Status](https://img.shields.io/badge/status-production--ready-brightgreen?style=for-the-badge)
 ![License](https://img.shields.io/badge/license-MIT-blue?style=for-the-badge)
