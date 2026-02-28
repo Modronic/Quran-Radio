@@ -2,7 +2,7 @@
             Live from Cairo, Egypt
 
 
-![Status](https://img.shields.io/badge/status-production--ready-brightgreen?style=for-the-badge)
+![Status](https://img.shields.io/badge/status-ready-brightgreen?style=for-the-badge)
 ![License](https://img.shields.io/badge/license-MIT-blue?style=for-the-badge)
 
 A beautiful, minimalist web application for listening to Holy Quran Radio from Cairo. Built with pure HTML, CSS, and JavaScript — **zero dependencies**, **single HTML file**, **respectful design**.
