@@ -1,4 +1,4 @@
-# 🌙 Holy Quran Cairo Radio Player
+# 🌙 Holy Quran Radio Player Live from Cairo
 
 ![Status](https://img.shields.io/badge/status-production--ready-brightgreen?style=for-the-badge)
 ![License](https://img.shields.io/badge/license-MIT-blue?style=for-the-badge)
