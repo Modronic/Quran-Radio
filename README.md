@@ -5,7 +5,7 @@
 ![Status](https://img.shields.io/badge/status-ready-brightgreen?style=for-the-badge)
 ![License](https://img.shields.io/badge/license-MIT-blue?style=for-the-badge)
 
-A beautiful, minimalist web application for listening to Holy Quran Radio from Cairo. Built with pure HTML, CSS, and JavaScript — **zero dependencies**, **single HTML file**, **respectful design**.
+A beautiful, minimalist web application for listening to the Holy Quran in radio style live from Cairo. Built with pure HTML, CSS, and JavaScript — **zero dependencies**, **single HTML file**, **respectful design**.
 
 > "وَإِذَا قُرِئَ الْقُرْآنُ فَاسْتَمِعُوا لَهُ وَأَنْصِتُوا لَعَلَّكُمْ تُرْحَمُونَ"  
 > — سورة الأعراف، الآية ٢٠٤
